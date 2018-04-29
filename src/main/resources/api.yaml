@@ -1,0 +1,144 @@
+swagger: '2.0'
+info:
+  title: Films API
+  description: |2-
+     # Films API #
+    This API is used to manage information about films. 
+  version: 1.0.0
+host: 'localhost:8080'
+schemes:
+  - http
+  - https
+tags:
+  - name: films
+    description: API For films management.
+paths:
+  /films:
+    get:
+      summary: return list of films
+      tags:
+        - films
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Film'
+  '/films/{id}':
+    get:
+      summary: Returns film by id
+      tags:
+        - films
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          minimum: 1
+          description: Film id
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Film'
+        '404':
+          description: Not Found
+  '/films/create':
+    post:
+      summary: Create film
+      parameters:
+        - in: body
+          name: Films
+          description: Film data
+          required: true
+          schema:
+            $ref: '#/definitions/Film'
+      tags:
+        - films
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Film'
+  '/films/{id}/remove':
+    delete:
+      summary: Delete films by id
+      tags:
+        - films
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          minimum: 1
+          description: Film id
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+  '/films/{id}/edit':  
+    patch:
+      summary: Update info about film
+      tags:
+        - films
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          minimum: 1
+          description: Film id
+        - in: body
+          name: Film
+          description: Film data
+          required: true
+          schema:
+            $ref: '#/definitions/Film'
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Film'
+        '404':
+          description: Not Found
+        '400':
+          description: Bad Request
+definitions:
+  Film:
+    type: object
+    properties:
+      id:
+        description: идентификатор фильма
+        type: integer
+      name:
+        description: название фильма
+        type: string
+      ageRestriction:
+        description: возрастное ограничение
+        type: string
+      duration:
+        description: продолжительность фильма в минутах
+        type: integer
+      country:
+        description: страна производства
+        type: string
+      imdb:
+        description: оценка фильма
+        type: number
+        format: double
